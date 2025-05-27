@@ -1,0 +1,29 @@
+{
+  "name": "express-dynamic-logger",
+  "version": "1.0.0",
+  "description": "Express middleware for dynamic, configurable logging of incoming requests, outgoing responses, missing routes and manual developer logs with custom prefixes, header redaction and flexible options.",
+  "main": "index.js",
+  "files": [
+    "index.js",
+    "README.md",
+    "LICENSE"
+  ],
+  "repository": {
+    "type": "git",
+    "url": ""
+  },
+  "keywords": [
+    "express",
+    "logger",
+    "middleware",
+    "winston",
+    "logging"
+  ],
+  "author": "Claudio Stuardo <claudio.stuardo96@gmail.com>",
+  "dependencies": {
+    "express": "^4.17.1",
+    "winston": "^3.3.3",
+    "uuid": "^8.3.2"
+  },
+  "license": "MIT"
+}
