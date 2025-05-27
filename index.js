@@ -87,7 +87,7 @@ function expressDynamicLogger(options = {}) {
   // Helper to build prefix string with spaces
   const buildPrefix = (...parts) => {
     const nonEmpty = parts.filter(p => p && p.length);
-    return nonEmpty.length ? nonEmpty.join(' ') + ' ' : '';
+    return nonEmpty.length ? nonEmpty.join(' ') + '  ' : '';
   };
 
   return function (req, res, next) {
