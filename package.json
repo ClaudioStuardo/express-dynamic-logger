@@ -1,6 +1,6 @@
 {
   "name": "express-dynamic-logger",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "Express middleware for dynamic, configurable logging of incoming requests, outgoing responses, missing routes and manual developer logs with custom prefixes, header redaction and flexible options.",
   "main": "index.js",
   "files": [
