@@ -20,20 +20,25 @@ yarn add express-dynamic-logger
 
 ## 🚀 Usage
 
-Import and mount the logger factory:
+Ensure you register body-parsing middleware before mounting the logger so that `req.body` is populated correctly:
 
 ```js
 const express = require('express');
 const app = express();
 
+// 1. Register body parsers
+app.use(express.json());       // for JSON bodies
+app.use(express.urlencoded({ extended: true })); // for URL-encoded bodies
+
+// 2. Mount the dynamic logger
+
 const logger = require('express-dynamic-logger');
-app.use(logger());       // default options
+app.use(logger()); // default options
 ```
 
-To pass custom options:
+To customize the logger, pass options into the factory:
 
 ```js
-const logger = require('express-dynamic-logger');
 app.use(logger({
   logPrefix: '[APP]',
   printAutoLogs: true,
