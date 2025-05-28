@@ -146,10 +146,9 @@ function expressDynamicLogger(options = {}) {
       // Auto-log incoming request
       if (cfg.printAutoLogs) {
         const prefix = buildPrefix(cfg.logPrefix, '[INI]');
-        autoLogger.info(prefix, {
+        const message = `${prefix}${req.method} ${req.originalUrl}`;
+        autoLogger.info(message, {
           requestId: rid,
-          method: req.method,
-          url: req.originalUrl,
           headers: headersToLog,
           query: req.query,
           params: req.params,
@@ -180,10 +179,9 @@ function expressDynamicLogger(options = {}) {
           const statusPrefix = cfg[`statusPrefix${cat}`] || '';
           const msgPrefix = buildPrefix(cfg.logPrefix, '[END]', statusPrefix);
 
-          autoLogger.info(msgPrefix, {
+          const message = `${msgPrefix}${req.method} ${req.originalUrl}`;
+          autoLogger.info(message, {
             requestId: rid,
-            method: req.method,
-            url: req.originalUrl,
             status,
             duration,
             response: responseBody
