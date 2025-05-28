@@ -49,6 +49,25 @@ app.use(logger({
 
 ---
 
+### Manual Logging
+
+Use `req.log` in your route handlers to emit custom messages at any level:
+
+```js
+app.get('/items', (req, res) => {
+  req.log.debug('Fetching items', { filter: req.query });
+  req.log.info('Items fetched successfully');
+  req.log.warn('Response size is large');
+  req.log.error('Failed to process item', { id: 123 });
+  req.log.fatal('Critical failure!');
+  res.send(items);
+});
+```
+
+This demonstrates how to call `req.log.debug/info/warn/error/fatal` for manual logs.
+
+---
+
 ## ⚙️ Configuration Options
 
 | Option                    | Type       | Default                       | Description                                                                                      |
