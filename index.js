@@ -35,7 +35,8 @@ const DEFAULT_BROWSER_HEADERS = [
   'upgrade-insecure-requests', 'sec-fetch-site', 'sec-fetch-mode',
   'sec-fetch-user', 'sec-fetch-dest', 'content-type', 'content-length',
   'cache-control', 'if-none-match', 'if-modified-since',
-  'accept-ranges', 'pragma', 'expires'
+  'accept-ranges', 'pragma', 'expires', 'sec-ch-ua', 'sec-ch-ua-mobile',
+  'sec-ch-ua-platform'
 ];
 
 const defaultConfig = {
@@ -153,27 +154,39 @@ function expressDynamicLogger(options = {}) {
         });
       }
 
-      // Override res.send
-      const origSend = res.send.bind(res);
-      res.send = body => {
-        if (cfg.printAutoLogs && (typeof body === 'string' || Buffer.isBuffer(body))) {
+      // Override res.send for single END log with parse
+      const origSend = res.send;
+      let hasLoggedEnd = false;
+      res.send = function (body) {
+        if (!hasLoggedEnd && cfg.printAutoLogs) {
+          hasLoggedEnd = true;
+
+          // Parse JSON string if possible
+          let responseBody = body;
+          if (typeof body === 'string') {
+            try {
+              responseBody = JSON.parse(body);
+            } catch (e) {
+              responseBody = body;
+            }
+          }
+
           const duration = `${Date.now() - start}ms`;
           const status = res.statusCode;
           const cat = Math.floor(status / 100) * 100;
           const statusPrefix = cfg[`statusPrefix${cat}`] || '';
           const msgPrefix = buildPrefix(cfg.logPrefix, '[END]', statusPrefix);
-          const logData = {
+
+          autoLogger.info(msgPrefix, {
             requestId: rid,
             method: req.method,
             url: req.originalUrl,
             status,
             duration,
-            response: body
-          };
-          if (status >= 400) autoLogger.error(msgPrefix, logData);
-          else autoLogger.info(msgPrefix, logData);
+            response: responseBody
+          });
         }
-        return origSend(body);
+        return origSend.call(this, body);
       };
 
       // Handle missing routes (404)
