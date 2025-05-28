@@ -50,7 +50,8 @@ app.use(logger({
 |---------------------------|------------|-------------------------------|--------------------------------------------------------------------------------------------------|
 | `level`                   | `string`   | `'info'`                      | Log level for automatic logs (`[INI]`, `[END]`).                                   |
 | `printAutoLogs`           | `boolean`  | `true`                        | Whether to print automatic logs.                                                                 |
-| `printManualLogs`         | `boolean`  | `true`                        | Whether to print developer-invoked logs (`req.log.*`).                                          |
+| `printManualLogs`         | `boolean`  | `true`                        | Whether to print developer-invoked logs (`req.log.*`).  
+| `skipPreflight`           | `boolean`  | `false`                       | Whether to skip logging CORS preflight (OPTIONS) requests                                        |                                        |
 | `requestIdHeader`         | `string`   | `'x-request-id'`              | Header name used to propagate or generate a request ID.                                          |
 | `autoGenerateRequestId`   | `boolean`  | `true`                        | Generate a UUID request ID if the header is missing.                                             |
 | `skipPaths`               | `string[]` | `['/health','/favicon.ico']`  | Array of routes to ignore (no logging).                                                         |
@@ -136,6 +137,15 @@ app.use(logger({
   levelPrefixWarn: '⚠️',
   levelPrefixError: '❌',
   levelPrefixFatal: '💀'
+}));
+```
+
+---
+
+### Ignore preflight CORS
+```js
+app.use(logger({
+  skipPreflight: true
 }));
 ```
 

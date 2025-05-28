@@ -59,7 +59,8 @@ const defaultConfig = {
   levelPrefixError: '',
   levelPrefixFatal: '',
   printAutoLogs: true,
-  printManualLogs: true
+  printManualLogs: true,
+  skipPreflight: false,
 };
 
 function expressDynamicLogger(options = {}) {
@@ -93,6 +94,8 @@ function expressDynamicLogger(options = {}) {
 
   return function (req, res, next) {
     try {
+      // Optionally skip CORS preflight OPTIONS requests
+      if (cfg.skipPreflight && req.method === 'OPTIONS') return next();
       if (cfg.skipPaths.includes(req.path)) return next();
 
       const start = Date.now();
